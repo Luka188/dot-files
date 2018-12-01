@@ -1,0 +1,261 @@
+; Colors are set from .Xresources for theme
+[colors]
+background = #222
+foreground = #888
+color0 = ${xrdb:color0}
+color1 = ${xrdb:color1}
+color2 = ${xrdb:color2}
+color3 = ${xrdb:color3}
+color4 = ${xrdb:color4}
+color5 = ${xrdb:color5}
+color6 = ${xrdb:color16}
+color7 = ${xrdb:color7}
+color8 = ${xrdb:color8}
+color9 = ${xrdb:color9}
+color10 = ${xrdb:color10}
+color11 = ${xrdb:color11}
+color12 = ${xrdb:color12}
+color13 = ${xrdb:color13}
+color14 = ${xrdb:color14}
+color15 = ${xrdb:color15}
+
+[bar/top]
+monitor = eDP-1
+bottom = false
+width = 100%
+height = 32
+offset-x = 0
+offset-y = 0
+radius = 0.0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+
+
+line-size = 2
+line-color = ${colors.color6}
+border-size = 0
+border-color = ${colors.color7}
+padding-left = 5
+padding-right = 5
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = FontAwesome:size=12;1
+font-1 = Operator Mono:size=10;1
+font-2 = DejaVu:size=10;1
+font-3 = weathericons-regular-webfont:size=10;1
+font-4 = FontAwesome5Brands:size=12;1
+
+modules-left = xworkspaces xwindow
+modules-center = date
+modules-right = bitcoin ethereum weather wifi backlight volume cpu memory fs battery
+
+tray-position = right
+tray-padding = 3
+tray-transparent = false
+tray-offset-y = 0%
+tray-offset-x = 0%
+tray-maxsize = 24
+tray-detached = false
+
+
+wm-restack = i3
+;override-redirect = true
+enable-ipc = true
+
+
+[module/xworkspaces]
+type = internal/xworkspaces
+enable-click = true
+enable-scroll = true
+
+icon-default = 
+label-monitor =
+format = " <label-state> "
+
+label-active = %icon%%{O5}
+label-active-foreground = ${colors.color6}
+
+label-occupied = %icon%%{O5}
+label-occupied-foreground = ${colors.color2}
+
+label-urgent = %icon%%{O5}
+label-urgent-foreground = ${colors.color1}
+
+label-empty = %icon%%{O5}
+label-empty-foreground = ${colors.color8}
+
+[module/date]
+type = internal/date
+interval = 0.5
+date =
+date-alt = "%d/%m/%Y"
+time = "%A %B %d - %H:%M:%S"
+time-alt = "%H:%M:%S"
+
+format-foreground = ${colors.color6}
+label = %date% %time%
+
+[module/weather]
+type = custom/script
+interval = 3600
+
+format = " <label> "
+format-underline = ${colors.color6}
+;label =%{T4}%{T-} %output%
+label = %{T4}%output%%{T-}
+exec = /home/luka/.config/polybar/customscripts/weather
+;exec-if = "ping -q -w 2 -c 1 8.8.8.8 > /dev/null"
+
+[module/backlight]
+type = custom/script
+interval = 0.5
+exec = ~/.config/polybar/customscripts/light
+card = intel_backlight
+enable-scroll = true
+format =  <label>
+scroll-up = exec light -A 5
+scroll-down = exec light -U 5
+
+format-underline = ${colors.color6}
+
+
+
+
+[module/wifi]
+type = internal/network
+interface = wlp2s0
+interval = 3
+
+format-connected = " <label-connected> "
+format-connected-underline = ${colors.color6}
+label-connected =  %essid:0:7:...% - %signal%
+
+format-disconnected = " <label-disconnected> "
+format-disconnected-underline = ${colors.color4}
+label-disconnected =  %ifname%
+
+
+[module/volume]
+type = internal/volume
+master-soundcard = default
+speaker-soundcard = default
+headphone-soundcard = default
+
+format-volume = " <ramp-volume> <label-volume> "
+format-volume-underline = ${colors.color6}
+label-volume = %percentage%%
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+format-muted = " <label-muted> "
+format-muted-underline = ${colors.color4}
+label-muted =  0%
+
+
+[module/fs]
+type = internal/fs
+mount-0 = /
+interval = 10
+fixed-values = true
+spacing = 0
+
+format-mounted = " <label-mounted> "
+format-mounted-underline = ${colors.color6}
+label-mounted =  %used:3:3% / %total:3:3% GB
+
+format-unmounted = " <label-unmounted> "
+format-unmounted-underline = ${colors.color4}
+label-unmounted = %mountpoint% not mounted
+
+[module/memory]
+type = internal/memory
+
+interval = 2
+
+format = <label>
+format-underline = ${colors.color6}
+label =  %percentage_used%%
+
+[module/cpu]
+type = internal/cpu
+
+interval = 2
+
+format = <label>
+format-underline = ${colors.color6}
+label =  %percentage%%
+
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP0
+full-at = 99
+
+format-full-prefix-foreground = ${colors.background}
+format-full-underline = ${colors.color6}
+
+format-charging = " <animation-charging> <label-charging> "
+format-charging-underline = ${colors.color6}
+
+format-discharging = "⁣ <ramp-capacity> <label-discharging> "
+format-discharging-underline = ${colors.color6}
+
+format-full = " <label-full> "
+
+label-full =   %percentage%%
+label-full-foreground = #fff94c
+ramp-capacity-0 = 
+ramp-capacity-0-foreground = #d82c1c3
+ramp-capacity-1 = 
+ramp-capacity-1-foreground = #e56c27
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/bitcoin]
+type = custom/script
+interval = 1000
+format = <label>
+format-underline = ${colors.color6}
+format-prefix = " "
+tail = true
+exec = ~/.config/polybar/customscripts/bitcoin
+
+[module/ethereum]
+type = custom/script
+interval = 1000
+format = <label>
+format-underline = ${colors.color6}
+format-prefix = "%{T5}%{T-} "
+tail = true
+exec = ~/.config/polybar/customscripts/ethereum
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:64:...%
+label-padding = 10

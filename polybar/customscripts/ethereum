@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+
+import requests
+import time as t
+found = False
+while (not found):
+  try:
+    r = requests.get('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
+    ticker = r.json()
+    found = True
+  except:
+    t.sleep(10)
+#et = requests.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=EUR')
+#etjson = et.json()
+#ethprice = int(round(float(etjson['EUR'])))
+
+price = float(ticker[0]['price_usd'])
+i = int(round(price))
+if i >= 1000:
+  i = int(i / 1000)
+  k = str(i)
+  u = str(price)[1]
+  print(k + '.' + u + 'K')
+else:
+  k = str(i)
+  print(k)

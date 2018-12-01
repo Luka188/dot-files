@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import requests
+import json
+import time as t
+from pprint import pprint
+from xml.etree import ElementTree
+path = "/home/luka/.config/polybar/customscripts/" 
+with open(path + "icons.xml", 'rt') as f:
+    tree = ElementTree.parse(f)
+with open(path + "icons.json") as data:
+  weatherIcons = json.load(data)
+CITY = "2988507"
+API_KEY = "da9e090405fb27c7f736b2f8b16913f6"
+UNITS = "Metric"
+UNIT_KEY = "C"
+found = False
+while ( not found):
+  try:
+    REQ = requests.get("http://api.openweathermap.org/data/2.5/weather?id={}&appid={}&units={}".format(CITY, API_KEY, UNITS))
+    found = True
+    if (REQ.status_code == 200):
+        CURRENT = REQ.json()["weather"][0]["description"].capitalize()
+        TEMP = int(float(REQ.json()["main"]["temp"]))
+        code = REQ.json()["weather"][0]["id"]
+        icon = weatherIcons[str(code)]["icon"]
+        prefix = "wi_"
+        if (not(code > 699 and code < 800) and not(code > 899 and code < 1000)):
+            icon = 'day_' + icon
+        icon = prefix + icon
+        iconchar = ''
+        for node in tree.iter():
+            if (icon == node.attrib.get("name")):
+                iconchar = node.text
+                iconchar = iconchar.encode('utf-8')
+        print("{}  {} °{}".format(iconchar, TEMP, UNIT_KEY))
+    else:
+        print(" Look through de window")
+  except:
+    t.sleep(20)
+
