@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --randomize --bg-fill /home/lucas/Work/personal/Lukas-backgrounds/*
